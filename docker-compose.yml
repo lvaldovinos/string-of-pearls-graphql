@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  vault:
+    image: "vault"
+    ports:
+      - "8200:8200"
+      - "8201:8201"
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - /Users/avaldovinos/projects/personal/vault-example/config:/vault/config
+      - /Users/avaldovinos/projects/personal/vault-example/data:/vault/data
+      - /Users/avaldovinos/projects/personal/vault-example/logs:/vault/logs
+    entrypoint: [
+      "vault",
+      "server",
+      "-config=/vault/config/local.json"
+    ]
+  db:
+    image: "postgres"
+    secrets:
+      - string_of_pearls_db_password
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/string_of_pearls_db_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - /Users/avaldovinos/projects/personal/graphqlexample-data:/var/lib/postgresql/data
+secrets:
+  string_of_pearls_db_password:
+    external: true

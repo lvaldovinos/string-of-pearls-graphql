@@ -1,0 +1,26 @@
+type Query {
+    getAll: [StringOfPearls]
+    getByDate(date: String): [Pearl]
+}
+
+type Mutation {
+    createPearl(pearl: PearlInput!): Pearl
+}
+
+type StringOfPearls {
+    date: String!
+    total: Int
+}
+
+type Pearl {
+    notes: String,
+    turd: String,
+    name: String
+}
+
+input PearlInput {
+    date: String,
+    notes: String,
+    turd: String,
+    name: String
+}
