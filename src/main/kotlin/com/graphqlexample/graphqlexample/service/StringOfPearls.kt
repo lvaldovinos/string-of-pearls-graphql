@@ -16,7 +16,7 @@ class StringOfPearlsService(private val connectionFactory: ConnectionFactory) {
         .create()
         .toMono()
         .flatMapMany {
-            it.createStatement("select creation_date, count(1) as total from string_of_pearls group by creation_date")
+            it.createStatement("select creation_date, count(1) as total from string_of_pearls group by creation_date order by 1 DESC")
                 .execute()
         }
             .flatMap {
@@ -40,8 +40,8 @@ class StringOfPearlsService(private val connectionFactory: ConnectionFactory) {
             it.map { row, metadata ->
                 Pearl(
                     name = row.get(0, String::class.java) ?: "",
-                    turd = row.get(1, String::class.java) ?: "",
-                    notes = row.get(2, String::class.java) ?: ""
+                    notes = row.get(1, String::class.java) ?: "",
+                    turd = row.get(2, String::class.java) ?: ""
                 )
             }
         }
